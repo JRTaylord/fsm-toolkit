@@ -1,0 +1,147 @@
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                                                                              ┃
+┃                    🎉 FSM TOOLKIT - START HERE! 🎉                          ┃
+┃                                                                              ┃
+┃         Extract state machines from code → Beautiful diagrams →              ┃
+┃                      Debuggable XState machines                              ┃
+┃                                                                              ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+📖 DOCUMENTATION GUIDE - READ IN THIS ORDER:
+════════════════════════════════════════════════════════════════════════════════
+
+1. 📄 OVERVIEW.txt
+   └─ Visual overview of the entire toolkit (5 min read)
+   
+2. 📘 README.md  
+   └─ Main documentation with features and examples (10 min read)
+
+3. ⚡ QUICK_REFERENCE.md
+   └─ Command cheat sheet for quick lookup (2 min read)
+
+4. 💻 PLATFORM_COMPATIBILITY.md
+   └─ Windows/macOS/Linux setup guide (as needed)
+
+5. 📚 code-to-fsm/WORKFLOW_GUIDE.md
+   └─ Complete step-by-step tutorial (20 min read)
+
+6. 📖 Tool-specific READMEs:
+   ├─ code-to-fsm/README.md
+   └─ mermaid-to-xstate/README.md
+
+
+🚀 QUICK START (< 5 MINUTES):
+════════════════════════════════════════════════════════════════════════════════
+
+Choose your platform:
+
+┌─ Windows ──────────────────────────────┐
+│                                        │
+│  PowerShell:                           │
+│  PS> .\quickstart.ps1                  │
+│                                        │
+│  Command Prompt:                       │
+│  C:\> quickstart.bat                   │
+│                                        │
+└────────────────────────────────────────┘
+
+┌─ macOS / Linux ────────────────────────┐
+│                                        │
+│  $ chmod +x quickstart.sh              │
+│  $ ./quickstart.sh                     │
+│                                        │
+└────────────────────────────────────────┘
+
+
+📦 WHAT'S INCLUDED:
+════════════════════════════════════════════════════════════════════════════════
+
+✅ code-to-fsm/          AI-powered code analyzer
+   • Analyzes codebases with Claude
+   • Extracts state machines automatically
+   • Generates Mermaid diagrams
+   • Interactive chat mode
+   • Example robot controller included
+
+✅ mermaid-to-xstate/    Mermaid → XState converter
+   • Converts diagrams to executable code
+   • Multiple output formats
+   • Interactive visualizer
+   • Production-ready output
+
+
+💡 COMMON USE CASES:
+════════════════════════════════════════════════════════════════════════════════
+
+🎯 "I have legacy code and don't understand the state logic"
+   → Run: node cli.js analyze /my/project
+   → Get: Beautiful diagram + full explanation
+
+🎯 "I want to refactor to clean state machines"
+   → Run: node cli.js analyze /my/project --to-xstate
+   → Get: XState code ready to use
+
+🎯 "I want to design state machines visually"
+   → Create: diagram.mmd (Mermaid)
+   → Convert: node cli.js diagram.mmd -o machine.js
+   → Use: XState machine in your code
+
+🎯 "I need to document my code's state machine"
+   → Run: node cli.js analyze /src -o ./docs/diagrams
+   → Get: Professional diagrams for documentation
+
+
+🔥 TRY IT NOW:
+════════════════════════════════════════════════════════════════════════════════
+
+Example 1: Analyze the included robot example
+─────────────────────────────────────────────
+cd code-to-fsm
+node cli.js analyze example-robot --to-xstate
+
+Example 2: Convert a Mermaid diagram
+─────────────────────────────────────
+cd mermaid-to-xstate
+node cli.js example.mmd -o robot.js
+
+Example 3: Interactive mode
+────────────────────────────
+cd code-to-fsm
+node cli.js interactive example-robot
+
+
+📚 FULL TUTORIAL:
+════════════════════════════════════════════════════════════════════════════════
+
+For a complete step-by-step guide from messy code to clean state machines:
+→ Read: code-to-fsm/WORKFLOW_GUIDE.md
+
+
+❓ NEED HELP?
+════════════════════════════════════════════════════════════════════════════════
+
+Platform issues?     → PLATFORM_COMPATIBILITY.md
+Command reference?   → QUICK_REFERENCE.md
+Full documentation?  → README.md
+Detailed tutorial?   → code-to-fsm/WORKFLOW_GUIDE.md
+
+
+🌟 KEY BENEFITS:
+════════════════════════════════════════════════════════════════════════════════
+
+✅ Cross-platform   - Windows, macOS, Linux
+✅ Multi-language   - Python, JS, C++, Java, etc.
+✅ AI-powered       - Claude understands your code
+✅ Visual           - Beautiful Mermaid diagrams
+✅ Executable       - Working XState machines
+✅ Debuggable       - XState Inspector support
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                                                                              ┃
+┃              Ready? Run the quickstart script for your platform!             ┃
+┃                                                                              ┃
+┃                   Windows: .\quickstart.ps1  or  quickstart.bat             ┃
+┃                   macOS/Linux: ./quickstart.sh                               ┃
+┃                                                                              ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛

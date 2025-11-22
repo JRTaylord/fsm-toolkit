@@ -1,0 +1,129 @@
+EXAMPLE OUTPUT
+==============
+
+When you run:
+  node cli.js analyze example-robot --to-xstate
+
+Expected Analysis:
+------------------
+
+I found a robot control state machine with 7 distinct states in the robot_controller.py file. The state machine manages the lifecycle of a robot from initialization through operation and eventual shutdown.
+
+States:
+- IDLE: Initial state after creation or error reset
+- INITIALIZING: Transient state during robot startup
+- READY: Robot is initialized and ready for commands
+- MOVING: Robot is actively moving to a target
+- PAUSED: Movement is temporarily paused
+- ERROR: Robot encountered an error condition
+- SHUTDOWN: Final state, robot is shut down
+
+Key Transitions:
+- initialize(): IDLE → INITIALIZING → READY
+- start_moving(): READY → MOVING or PAUSED → MOVING (resume)
+- pause(): MOVING → PAUSED
+- stop(): MOVING/PAUSED → READY
+- handle_error(): ANY (except SHUTDOWN) → ERROR
+- reset_error(): ERROR → IDLE
+- shutdown(): IDLE/READY/ERROR → SHUTDOWN
+
+Generated Mermaid Diagram:
+--------------------------
+
+stateDiagram-v2
+    [*] --> IDLE
+    
+    IDLE --> INITIALIZING: initialize()
+    INITIALIZING --> READY: initialization complete
+    
+    READY --> MOVING: start_moving()
+    
+    MOVING --> PAUSED: pause()
+    PAUSED --> MOVING: start_moving() (resume)
+    
+    MOVING --> READY: stop()
+    PAUSED --> READY: stop()
+    
+    IDLE --> ERROR: handle_error()
+    INITIALIZING --> ERROR: handle_error()
+    READY --> ERROR: handle_error()
+    MOVING --> ERROR: handle_error()
+    PAUSED --> ERROR: handle_error()
+    
+    ERROR --> IDLE: reset_error()
+    
+    IDLE --> SHUTDOWN: shutdown()
+    READY --> SHUTDOWN: shutdown()
+    ERROR --> SHUTDOWN: shutdown()
+    
+    SHUTDOWN --> [*]
+
+Generated XState Code:
+----------------------
+
+import { createMachine } from 'xstate';
+
+const machine = createMachine({
+  "id": "extractedMachine",
+  "initial": "IDLE",
+  "states": {
+    "IDLE": {
+      "on": {
+        "INITIALIZE": "INITIALIZING",
+        "HANDLE_ERROR": "ERROR",
+        "SHUTDOWN": "SHUTDOWN"
+      }
+    },
+    "INITIALIZING": {
+      "on": {
+        "INITIALIZATION_COMPLETE": "READY",
+        "HANDLE_ERROR": "ERROR"
+      }
+    },
+    "READY": {
+      "on": {
+        "START_MOVING": "MOVING",
+        "HANDLE_ERROR": "ERROR",
+        "SHUTDOWN": "SHUTDOWN"
+      }
+    },
+    "MOVING": {
+      "on": {
+        "PAUSE": "PAUSED",
+        "STOP": "READY",
+        "HANDLE_ERROR": "ERROR"
+      }
+    },
+    "PAUSED": {
+      "on": {
+        "START_MOVING": "MOVING",
+        "STOP": "READY",
+        "HANDLE_ERROR": "ERROR"
+      }
+    },
+    "ERROR": {
+      "on": {
+        "RESET_ERROR": "IDLE",
+        "SHUTDOWN": "SHUTDOWN"
+      }
+    },
+    "SHUTDOWN": {
+      "type": "final"
+    }
+  }
+});
+
+export default machine;
+
+Files Analyzed:
+---------------
+- robot_controller.py
+
+Next Steps:
+-----------
+1. Review the generated state machine diagram
+2. Verify it matches your intended behavior
+3. Refactor your code to use the XState machine
+4. Add guards for error conditions (e.g., check if sensors are working)
+5. Add actions for side effects (e.g., log state changes, send telemetry)
+6. Use XState Inspector to debug and visualize in real-time
