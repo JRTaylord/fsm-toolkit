@@ -15,23 +15,18 @@ Extract state machines from your codebase and generate beautiful Mermaid diagram
 - macOS (Intel & Apple Silicon)
 - Linux (Ubuntu, Debian, Fedora, etc.)
 
-**Requirements:** Node.js 14+ and npm
+**Requirements:** Python 3.7+ and Claude Code CLI
 
 ### Automated Setup
 
-**macOS / Linux:**
+**All Platforms:**
 ```bash
-./quickstart.sh
+python quickstart.py
 ```
 
-**Windows (PowerShell):**
-```powershell
-.\quickstart.ps1
-```
-
-**Windows (Command Prompt):**
+Or on Windows:
 ```cmd
-quickstart.bat
+python quickstart.py
 ```
 
 ### Manual Setup & Extract State Machine from Your Code
@@ -39,15 +34,13 @@ quickstart.bat
 **macOS / Linux:**
 ```bash
 cd code-to-fsm
-npm install
-node cli.js analyze /path/to/your/robot/project
+python3 cli.py analyze /path/to/your/robot/project
 ```
 
 **Windows:**
 ```cmd
 cd code-to-fsm
-npm install
-node cli.js analyze C:\path\to\your\robot\project
+python cli.py analyze C:\path\to\your\robot\project
 ```
 
 This will:
@@ -155,38 +148,48 @@ node cli.js analyze ./src
 
 ## 🔧 Requirements
 
-- Node.js 14+
-- npm or yarn
+- Python 3.7+
 - Claude Code CLI (for AI-powered analysis)
+- No additional Python packages required (uses standard library)
 
 ### Platform-Specific Notes
 
 **Windows:**
 - Use PowerShell or Command Prompt (both work!)
 - File paths use backslashes: `C:\Users\...\project`
-- npm commands work identically to Unix systems
+- Python commands work identically to Unix systems
 
 **macOS:**
 - No additional setup needed
 - Works on both Intel and Apple Silicon
+- Use `python3` command
 
 **Linux:**
-- Install Node.js via package manager or nvm
+- Python 3 usually pre-installed
+- Use `python3` command
 - Works on all major distributions
 
 ## 🚀 Installation
 
 ```bash
-# Install code-to-fsm
+# No installation needed - uses Python standard library
 cd code-to-fsm
-npm install
-npm link  # Optional: install globally
+
+# Make executable on Unix (optional)
+chmod +x cli.py
 ```
 
-### Global Usage (after npm link)
+### Usage
 
 ```bash
-code-to-fsm analyze /my/project
+# Unix/macOS
+python3 cli.py analyze /my/project
+
+# Windows
+python cli.py analyze C:\my\project
+
+# Or if made executable (Unix/macOS)
+./cli.py analyze /my/project
 ```
 
 ## 💡 Examples
@@ -213,8 +216,7 @@ This toolkit is designed to work seamlessly with Claude Code:
 - name: Generate FSM Diagrams
   run: |
     cd code-to-fsm
-    npm install
-    node cli.js analyze ../src -o ../docs/fsm
+    python3 cli.py analyze ../src -o ../docs/fsm
 ```
 
 ## 🎓 Learning Resources

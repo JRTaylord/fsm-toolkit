@@ -1,3 +1,4 @@
 node_modules/
 .claude/
 fsm-output/
+__pycache__/

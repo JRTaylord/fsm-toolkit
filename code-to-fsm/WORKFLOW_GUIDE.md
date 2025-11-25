@@ -71,7 +71,7 @@ class Robot:
 
 ```bash
 cd code-to-fsm
-node cli.js analyze ../my-robot -o ../output
+python3 cli.py analyze ../my-robot -o ../output
 ```
 
 **Output:** `state-machine.mmd`
@@ -174,7 +174,7 @@ Use the visual diagram to guide improvements:
 ```bash
 # Run interactive mode to explore specific areas
 cd code-to-fsm
-node cli.js interactive ../my-robot
+python3 cli.py interactive ../my-robot
 ```
 
 Ask Claude questions like:
@@ -191,7 +191,7 @@ Ask Claude questions like:
 **Keep it Updated:**
 ```bash
 # Re-run analysis after code changes
-node cli.js analyze ../my-robot -o ../output
+python3 cli.py analyze ../my-robot -o ../output
 
 # Compare with previous version
 diff ../output/state-machine.mmd ../docs/previous-version.mmd
@@ -293,7 +293,7 @@ A: Edit the `.mmd` file to add them, or use interactive mode to ask Claude about
 
 ## Next Steps
 
-1. Try it on your project: `node cli.js analyze /path/to/project`
+1. Try it on your project: `python3 cli.py analyze /path/to/project`
 2. Review the generated diagram in your browser
 3. Export diagrams for documentation
 4. Share with your team for feedback

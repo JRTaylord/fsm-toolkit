@@ -1,0 +1,5 @@
+# FSM Toolkit Requirements
+# Python 3.7+
+
+# No external dependencies required - uses only Python standard library
+# The tool relies on the Claude Code CLI being installed and in PATH

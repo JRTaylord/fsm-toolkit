@@ -2,7 +2,7 @@ EXAMPLE OUTPUT
 ==============
 
 When you run:
-  node cli.js analyze example-robot
+  python3 cli.py analyze example-robot
 
 Expected Analysis:
 ------------------

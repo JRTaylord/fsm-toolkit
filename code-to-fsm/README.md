@@ -13,13 +13,16 @@ Analyze your codebase to automatically extract state machine patterns and genera
 ## 🚀 Installation & Setup
 
 **Requirements:**
-- Node.js 14+
+- Python 3.7+
 - [Claude Code CLI](https://claude.com/claude-code)
 
-**Install:**
+**Setup:**
 ```bash
 cd code-to-fsm
-npm install
+# No installation needed - uses Python standard library
+
+# Make executable (Unix/macOS, optional)
+chmod +x cli.py
 ```
 
 **Verify Claude CLI:**
@@ -35,16 +38,16 @@ See [SETUP.md](./SETUP.md) for detailed setup instructions and troubleshooting.
 
 ```bash
 # Basic analysis
-node cli.js analyze /path/to/your/robot/project
+python3 cli.py analyze /path/to/your/robot/project
 
 # Analyze specific files
-node cli.js analyze ./my-project -f robot_controller.py motor_driver.py
+python3 cli.py analyze ./my-project -f robot_controller.py motor_driver.py
 
 # Focus on specific component
-node cli.js analyze ./my-project --focus "navigation system"
+python3 cli.py analyze ./my-project --focus "navigation system"
 
 # Custom output location
-node cli.js analyze ./my-project -o ./output
+python3 cli.py analyze ./my-project -o ./output
 ```
 
 ### Interactive Mode
@@ -52,7 +55,7 @@ node cli.js analyze ./my-project -o ./output
 Chat with Claude about your state machine:
 
 ```bash
-node cli.js interactive /path/to/your/project -f robot_controller.py
+python3 cli.py interactive /path/to/your/project -f robot_controller.py
 ```
 
 Example conversation:
@@ -172,26 +175,26 @@ The tool also generates an interactive HTML file that opens in your browser with
 ### 1. Understanding Legacy Code
 ```bash
 # Inherited a robot project with unclear state logic?
-node cli.js analyze ./legacy-robot-code --focus "main controller"
+python3 cli.py analyze ./legacy-robot-code --focus "main controller"
 ```
 
 ### 2. Refactoring Planning
 ```bash
 # Extract the implicit state machine to visualize before refactoring
-node cli.js analyze ./my-project
+python3 cli.py analyze ./my-project
 # Use the diagram to plan your refactoring approach
 ```
 
 ### 3. Documentation
 ```bash
 # Generate diagrams for your documentation
-node cli.js analyze ./src -o ./docs/diagrams
+python3 cli.py analyze ./src -o ./docs/diagrams
 ```
 
 ### 4. Code Review
 ```bash
 # Visualize state machine before reviewing changes
-node cli.js analyze ./feature-branch --focus "new feature"
+python3 cli.py analyze ./feature-branch --focus "new feature"
 ```
 
 ## 🔌 Integration with Existing Workflow
@@ -200,7 +203,7 @@ node cli.js analyze ./feature-branch --focus "new feature"
 ```bash
 #!/bin/bash
 # .git/hooks/pre-commit
-node cli.js analyze ./src -o ./docs/state-machines
+python3 cli.py analyze ./src -o ./docs/state-machines
 git add docs/state-machines/*
 ```
 
@@ -209,8 +212,8 @@ git add docs/state-machines/*
 # .github/workflows/docs.yml
 - name: Generate State Machine Diagrams
   run: |
-    npm install -g code-to-fsm
-    code-to-fsm analyze ./src -o ./docs/diagrams
+    cd code-to-fsm
+    python3 cli.py analyze ./src -o ./docs/diagrams
 ```
 
 ### With Claude Code
@@ -228,7 +231,7 @@ This tool generates Mermaid diagrams that can be:
 ```bash
 # Extract state machine from code
 cd code-to-fsm
-node cli.js analyze ../my-robot -o ../output
+python3 cli.py analyze ../my-robot -o ../output
 
 # View the interactive visualization (auto-opens in browser)
 # Or manually edit the Mermaid diagram if needed
@@ -276,8 +279,9 @@ See `example-robot/` for a sample Python robot controller that demonstrates comm
 
 ## 🤖 Requirements
 
-- Node.js 14+
+- Python 3.7+
 - Claude Code CLI (install from https://claude.com/claude-code)
+- No additional Python packages required (uses standard library)
 
 ## 📄 License
 
