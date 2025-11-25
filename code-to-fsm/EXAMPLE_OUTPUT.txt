@@ -2,7 +2,7 @@ EXAMPLE OUTPUT
 ==============
 
 When you run:
-  node cli.js analyze example-robot --to-xstate
+  node cli.js analyze example-robot
 
 Expected Analysis:
 ------------------
@@ -58,72 +58,21 @@ stateDiagram-v2
     
     SHUTDOWN --> [*]
 
-Generated XState Code:
-----------------------
-
-import { createMachine } from 'xstate';
-
-const machine = createMachine({
-  "id": "extractedMachine",
-  "initial": "IDLE",
-  "states": {
-    "IDLE": {
-      "on": {
-        "INITIALIZE": "INITIALIZING",
-        "HANDLE_ERROR": "ERROR",
-        "SHUTDOWN": "SHUTDOWN"
-      }
-    },
-    "INITIALIZING": {
-      "on": {
-        "INITIALIZATION_COMPLETE": "READY",
-        "HANDLE_ERROR": "ERROR"
-      }
-    },
-    "READY": {
-      "on": {
-        "START_MOVING": "MOVING",
-        "HANDLE_ERROR": "ERROR",
-        "SHUTDOWN": "SHUTDOWN"
-      }
-    },
-    "MOVING": {
-      "on": {
-        "PAUSE": "PAUSED",
-        "STOP": "READY",
-        "HANDLE_ERROR": "ERROR"
-      }
-    },
-    "PAUSED": {
-      "on": {
-        "START_MOVING": "MOVING",
-        "STOP": "READY",
-        "HANDLE_ERROR": "ERROR"
-      }
-    },
-    "ERROR": {
-      "on": {
-        "RESET_ERROR": "IDLE",
-        "SHUTDOWN": "SHUTDOWN"
-      }
-    },
-    "SHUTDOWN": {
-      "type": "final"
-    }
-  }
-});
-
-export default machine;
-
 Files Analyzed:
 ---------------
 - robot_controller.py
 
+Generated Files:
+----------------
+- state-machine.mmd (Mermaid diagram source)
+- analysis.txt (Full state machine analysis)
+- state-machine.html (Interactive visualization - auto-opens in browser)
+
 Next Steps:
 -----------
-1. Review the generated state machine diagram
+1. Review the diagram in your browser (opens automatically)
 2. Verify it matches your intended behavior
-3. Refactor your code to use the XState machine
-4. Add guards for error conditions (e.g., check if sensors are working)
-5. Add actions for side effects (e.g., log state changes, send telemetry)
-6. Use XState Inspector to debug and visualize in real-time
+3. Export as PNG/SVG for documentation
+4. Use the diagram to plan refactoring
+5. Share with your team for review
+6. Keep the diagram updated as code evolves

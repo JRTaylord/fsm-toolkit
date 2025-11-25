@@ -1,6 +1,6 @@
-# Complete Workflow: From Code to Debuggable State Machine
+# Complete Workflow: From Code to Visual State Diagrams
 
-This guide shows the complete workflow from analyzing existing code to having a debuggable XState implementation.
+This guide shows the complete workflow from analyzing existing code to generating beautiful, shareable Mermaid diagrams.
 
 ## The Complete Pipeline
 
@@ -15,29 +15,23 @@ This guide shows the complete workflow from analyzing existing code to having a 
 │  code-to-fsm       │  → Analyzes code with Claude
 └──────────┬─────────┘  → Generates Mermaid diagram
            │
-           │ Step 2: Refine (optional)
+           │ Step 2: Visualize
+           ▼
+┌────────────────────┐
+│  Browser Viewer    │  → Interactive visualization
+└──────────┬─────────┘  → Zoom, pan, export
+           │
+           │ Step 3: Refine (optional)
            ▼
 ┌────────────────────┐
 │  Mermaid Diagram   │  → Edit diagram if needed
 └──────────┬─────────┘  → Add missing transitions
            │
-           │ Step 3: Convert
+           │ Step 4: Document & Share
            ▼
 ┌────────────────────┐
-│ mermaid-to-xstate  │  → Converts to XState
-└──────────┬─────────┘  → Generates executable code
-           │
-           │ Step 4: Refactor
-           ▼
-┌────────────────────┐
-│  Your New Code     │  (Explicit XState machine)
-└──────────┬─────────┘
-           │
-           │ Step 5: Debug
-           ▼
-┌────────────────────┐
-│  XState Inspector  │  → Visual debugging
-└────────────────────┘  → Time-travel debugging
+│  Documentation     │  → Add to docs
+└────────────────────┘  → Share with team
 ```
 
 ## Step-by-Step Example
@@ -77,7 +71,7 @@ class Robot:
 
 ```bash
 cd code-to-fsm
-node cli.js analyze ../my-robot --to-xstate -o ../output
+node cli.js analyze ../my-robot -o ../output
 ```
 
 **Output:** `state-machine.mmd`
@@ -124,298 +118,164 @@ stateDiagram-v2
     Shutdown --> [*]
 ```
 
-### Step 3: Convert to XState
+### Step 3: View in Browser
 
+The analyzer automatically opens an interactive HTML visualization in your browser featuring:
+- **Zoom and Pan**: Navigate large diagrams easily
+- **Export Options**: Save as SVG or PNG
+- **Clean Rendering**: Professional Mermaid visualization
+- **Shareable**: Send link or screenshot to team members
+
+You can also manually view it anytime:
 ```bash
-cd ../mermaid-to-xstate
-node cli.js ../output/state-machine.mmd -o ../output/robot-machine.js -i robotMachine
+# Open the generated HTML file
+open ../output/state-machine.html  # macOS
+start ../output/state-machine.html # Windows
+xdg-open ../output/state-machine.html # Linux
 ```
 
-**Output:** `robot-machine.js`
-```javascript
-import { createMachine } from 'xstate';
+### Step 4: Use for Documentation & Planning
 
-const machine = createMachine({
-  id: "robotMachine",
-  initial: "Uninitialized",
-  states: {
-    Uninitialized: {
-      on: { INITIALIZE: "Initializing" }
-    },
-    Initializing: {
-      on: {
-        INIT_COMPLETE: "Ready",
-        INIT_FAILED: "Error"
-      }
-    },
-    Ready: {
-      on: {
-        START: "Moving",
-        SENSOR_FAULT: "Error",
-        SHUTDOWN: "Shutdown"
-      }
-    },
-    Moving: {
-      on: {
-        PAUSE: "Paused",
-        STOP: "Ready",
-        MOTOR_FAULT: "Error"
-      }
-    },
-    Paused: {
-      on: {
-        RESUME: "Moving",
-        STOP: "Ready",
-        BATTERY_LOW: "Error"
-      }
-    },
-    Error: {
-      on: {
-        RESET: "Ready",
-        FULL_RESET: "Uninitialized"
-      }
-    },
-    Shutdown: {
-      type: "final"
-    }
-  }
-});
+Now you can use the diagram for multiple purposes:
 
-export default machine;
+**For Documentation:**
+```bash
+# Copy to docs folder
+cp ../output/state-machine.mmd ../docs/architecture/
+
+# Or export as image from browser
+# Click "Export" → "PNG" or "SVG"
 ```
 
-### Step 4: Refactor Your Code
+**For Team Communication:**
+- Share the diagram in design reviews
+- Use in technical specifications
+- Include in pull request descriptions
+- Add to project wiki
 
-Now refactor to use the explicit state machine:
-
-```javascript
-// robot_controller.js - After
-import { interpret } from 'xstate';
-import robotMachine from './robot-machine.js';
-
-class Robot {
-  constructor() {
-    // Create state machine service
-    this.service = interpret(robotMachine)
-      .onTransition((state) => {
-        console.log('State:', state.value);
-        this.onStateChange(state);
-      })
-      .start();
-  }
-  
-  // Commands now just send events
-  initialize() {
-    this.service.send('INITIALIZE');
-  }
-  
-  start() {
-    this.service.send('START');
-  }
-  
-  pause() {
-    this.service.send('PAUSE');
-  }
-  
-  // State machine handles all logic
-  onStateChange(state) {
-    switch (state.value) {
-      case 'Moving':
-        this.actuallyMove();
-        break;
-      case 'Error':
-        this.handleErrorState();
-        break;
-      // ...
-    }
-  }
-  
-  // Check state instead of flags
-  isReady() {
-    return this.service.state.matches('Ready');
-  }
-  
-  canMove() {
-    return this.service.state.can('START');
-  }
-}
-```
+**For Refactoring Planning:**
+- Identify complex state transitions that need simplification
+- Find missing error handling paths
+- Discover unreachable states
+- Plan incremental refactoring steps
 
 **Benefits:**
-- ✅ Clear, explicit state
-- ✅ Impossible to be in invalid state
-- ✅ Easy to reason about
-- ✅ Can check `state.can(event)` before sending
-- ✅ Built-in debugging support
+- ✅ Clear visualization of implicit state logic
+- ✅ Easy to spot issues and edge cases
+- ✅ Great for team alignment
+- ✅ Perfect for onboarding new developers
+- ✅ Living documentation that stays in sync
 
-### Step 5: Add Guards and Actions
+### Step 5: Iterate and Improve
 
-Enhance the machine with guards (conditions) and actions (side effects):
+Use the visual diagram to guide improvements:
 
-```javascript
-import { createMachine, assign } from 'xstate';
-
-const robotMachine = createMachine({
-  id: "robotMachine",
-  initial: "Uninitialized",
-  context: {
-    position: { x: 0, y: 0 },
-    battery: 100,
-    errorMessage: null
-  },
-  states: {
-    Ready: {
-      entry: 'clearError',  // Action: clear error on entry
-      on: {
-        START: {
-          target: 'Moving',
-          guard: 'hasSufficientBattery',  // Guard: only if battery > 20%
-          actions: 'logStart'
-        },
-        SENSOR_FAULT: {
-          target: 'Error',
-          actions: assign({
-            errorMessage: 'Sensor malfunction detected'
-          })
-        }
-      }
-    },
-    Moving: {
-      entry: 'startMotors',
-      exit: 'stopMotors',
-      on: {
-        PAUSE: 'Paused',
-        MOTOR_FAULT: {
-          target: 'Error',
-          actions: assign({
-            errorMessage: 'Motor fault detected'
-          })
-        }
-      }
-    },
-    // ... other states
-  }
-}, {
-  guards: {
-    hasSufficientBattery: (context) => context.battery > 20
-  },
-  actions: {
-    clearError: assign({ errorMessage: null }),
-    logStart: () => console.log('Starting movement'),
-    startMotors: () => console.log('Motors ON'),
-    stopMotors: () => console.log('Motors OFF')
-  }
-});
-```
-
-### Step 6: Debug with XState Inspector
-
-Install the inspector:
+**Identify Issues:**
 ```bash
-npm install @xstate/inspect
+# Run interactive mode to explore specific areas
+cd code-to-fsm
+node cli.js interactive ../my-robot
 ```
 
-Add to your code:
-```javascript
-import { inspect } from '@xstate/inspect';
+Ask Claude questions like:
+- "What happens if we're in Moving state and get a battery error?"
+- "Are there any unreachable states?"
+- "Can we simplify these transitions?"
 
-// Start inspector (dev only)
-if (process.env.NODE_ENV !== 'production') {
-  inspect({
-    iframe: false  // Open in separate window
-  });
-}
+**Refine the Diagram:**
+1. Edit the `.mmd` file to add missing transitions
+2. Add notes about guards or conditions as comments
+3. Simplify complex state structures
+4. Document edge cases
 
-// Create service with inspector
-const service = interpret(robotMachine, { devTools: true });
+**Keep it Updated:**
+```bash
+# Re-run analysis after code changes
+node cli.js analyze ../my-robot -o ../output
+
+# Compare with previous version
+diff ../output/state-machine.mmd ../docs/previous-version.mmd
 ```
-
-Visit https://stately.ai/viz to see:
-- Current state in real-time
-- Available transitions
-- State history (time-travel!)
-- Context values
-- Event logs
 
 ## Comparison: Before vs After
 
 ### Before (Implicit State)
 ```python
-# Scattered flags
+# Scattered flags - hard to understand
 is_moving = True
 is_paused = False
 has_error = False
 
-# Unclear transitions
+# Unclear transitions - bugs waiting to happen
 if user_clicks_pause:
     if is_moving and not has_error:
         is_paused = True
         is_moving = False
 
 # What if both flags are True? 🤔
+# How do we transition from error to moving?
+# No documentation of valid states!
 ```
 
-### After (Explicit State Machine)
-```javascript
-// Single source of truth
-state.value  // "Moving" | "Paused" | "Error" | ...
-
-// Clear transitions
-service.send('PAUSE');
-
-// Impossible to have invalid state! ✅
+### After (Visual State Diagram)
+```mermaid
+stateDiagram-v2
+    [*] --> Idle
+    Idle --> Moving: start()
+    Moving --> Paused: pause()
+    Moving --> Error: fault_detected
+    Paused --> Moving: resume()
+    Error --> Idle: reset()
 ```
 
-## Common Patterns
+**Benefits:**
+- ✅ All states visible at a glance
+- ✅ All transitions documented
+- ✅ Easy to spot missing error handling
+- ✅ Clear communication with team
+- ✅ Foundation for refactoring
+
+## Common Diagram Patterns
 
 ### Pattern 1: Error Recovery
-```javascript
-states: {
-  Error: {
-    on: {
-      RETRY: [
-        { target: 'Initializing', guard: 'isInitError' },
-        { target: 'Ready', guard: 'isRuntimeError' }
-      ]
-    }
-  }
-}
+```mermaid
+stateDiagram-v2
+    Ready --> Error: fault
+    Error --> Initializing: retry (init error)
+    Error --> Ready: retry (runtime error)
+    note right of Error: Different recovery paths<br/>based on error type
 ```
 
 ### Pattern 2: Timeout Transitions
-```javascript
-states: {
-  Initializing: {
-    after: {
-      5000: { target: 'Error', actions: 'logTimeout' }
-    }
-  }
-}
+```mermaid
+stateDiagram-v2
+    Idle --> Initializing: start
+    Initializing --> Ready: init_complete
+    Initializing --> Error: timeout (5s)
+    note right of Initializing: Add timeout handling<br/>for long operations
 ```
 
-### Pattern 3: Nested States
-```javascript
-states: {
-  Operating: {
-    initial: 'Idle',
-    states: {
-      Idle: { on: { START: 'Active' } },
-      Active: { on: { STOP: 'Idle' } }
-    },
-    on: {
-      EMERGENCY_STOP: '#robotMachine.Error'
+### Pattern 3: Nested States (Hierarchical)
+```mermaid
+stateDiagram-v2
+    [*] --> Operating
+    state Operating {
+        [*] --> Idle
+        Idle --> Active: start
+        Active --> Idle: stop
     }
-  }
-}
+    Operating --> Error: emergency_stop
+    note right of Operating: Group related states<br/>for clearer organization
 ```
 
 ## Tips & Best Practices
 
-1. **Start Simple**: Extract basic states first, add guards/actions later
-2. **Name Events Clearly**: Use UPPER_CASE for events, PascalCase for states
-3. **One Machine Per Component**: Don't create a god-machine for everything
-4. **Test State Transitions**: Write tests for invalid transitions
-5. **Use the Inspector**: Debug visually, it's much easier than console.log
+1. **Start Simple**: Extract basic states first, refine later
+2. **Name States Clearly**: Use descriptive names that match your domain
+3. **Document Transitions**: Add notes in Mermaid for complex transition logic
+4. **Use Interactive Mode**: Chat with Claude to understand unclear state logic
+5. **Keep Diagrams Updated**: Re-run analysis after significant code changes
+6. **Export and Share**: Use PNG/SVG exports for documentation and presentations
 
 ## Troubleshooting
 
@@ -423,23 +283,27 @@ states: {
 A: Use `--focus` flag to narrow the scope, or manually simplify the Mermaid diagram
 
 **Q: My code doesn't have clear states**
-A: That's exactly why you need this! The process of extracting the FSM will help you discover the implicit state machine and refactor it to be explicit.
+A: That's exactly why you need this! The process of extracting the FSM will help you discover the implicit state machine and make it visible.
 
-**Q: Can I use this with existing XState code?**
-A: Yes! Use `code-to-fsm` to document existing machines or compare them with your mental model.
+**Q: The diagram is too complex**
+A: This often reveals that the code itself is too complex. Use the diagram to identify refactoring opportunities.
+
+**Q: Some transitions are missing**
+A: Edit the `.mmd` file to add them, or use interactive mode to ask Claude about specific scenarios.
 
 ## Next Steps
 
-1. Try it on your robot project: `node cli.js analyze /path/to/project`
-2. Review the generated diagram
-3. Refactor incrementally - start with one component
-4. Add guards and actions as needed
-5. Use XState Inspector to debug
-6. Enjoy clearer, more maintainable code! 🎉
+1. Try it on your project: `node cli.js analyze /path/to/project`
+2. Review the generated diagram in your browser
+3. Export diagrams for documentation
+4. Share with your team for feedback
+5. Use insights to plan refactoring
+6. Keep diagrams updated as code evolves
+7. Enjoy clearer, better-documented code! 🎉
 
 ---
 
 For more info:
-- XState docs: https://xstate.js.org
 - Mermaid docs: https://mermaid.js.org
-- Stately Inspector: https://stately.ai/viz
+- Mermaid Live Editor: https://mermaid.live
+- State Machine Concepts: https://en.wikipedia.org/wiki/Finite-state_machine

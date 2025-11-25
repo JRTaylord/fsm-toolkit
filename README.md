@@ -1,15 +1,10 @@
-# Complete FSM Toolkit
+# FSM Toolkit
 
-A comprehensive suite of tools for working with Finite State Machines in your codebase.
+Extract state machines from your codebase and generate beautiful Mermaid diagrams using AI.
 
 ## 🎯 What This Gives You
 
-Two complementary tools that work together:
-
-1. **code-to-fsm**: Extract state machines from existing code using AI
-2. **mermaid-to-xstate**: Convert Mermaid diagrams to executable XState code
-
-Together, they enable a complete workflow from messy implicit state logic to clean, debuggable state machines.
+**code-to-fsm**: An AI-powered tool that analyzes your code and automatically generates beautiful Mermaid state diagrams, making implicit state machines visible and understandable.
 
 ## 🚀 Quick Start
 
@@ -45,49 +40,34 @@ quickstart.bat
 ```bash
 cd code-to-fsm
 npm install
-node cli.js analyze /path/to/your/robot/project --to-xstate
+node cli.js analyze /path/to/your/robot/project
 ```
 
 **Windows:**
 ```cmd
 cd code-to-fsm
 npm install
-node cli.js analyze C:\path\to\your\robot\project --to-xstate
+node cli.js analyze C:\path\to\your\robot\project
 ```
 
 This will:
 1. ✅ Analyze your code with Claude AI
 2. ✅ Generate a Mermaid state diagram
-3. ✅ Convert to XState machine code
+3. ✅ Open interactive visualization in browser
 4. ✅ Save everything in `./fsm-output/`
-
-### Convert Mermaid to XState
-
-```bash
-cd mermaid-to-xstate
-npm install
-node cli.js input.mmd -o output.js
-```
 
 ## 📦 What's Included
 
 ```
-├── code-to-fsm/           # AI-powered code analysis
-│   ├── cli.js             # Command-line interface
-│   ├── analyzer.js        # Core analyzer with Claude integration
-│   ├── example-robot/     # Example Python robot controller
-│   ├── README.md          # Detailed documentation
-│   └── WORKFLOW_GUIDE.md  # Complete step-by-step guide
-│
-└── mermaid-to-xstate/     # Mermaid → XState converter
-    ├── cli.js             # Command-line interface
-    ├── parser.js          # Mermaid parser
-    ├── visualizer.html    # Interactive state machine tester
-    ├── example.mmd        # Example Mermaid diagram
-    └── README.md          # Detailed documentation
+code-to-fsm/              # AI-powered code analysis
+├── cli.js                # Command-line interface
+├── analyzer.js           # Core analyzer with Claude integration
+├── example-robot/        # Example Python robot controller
+├── README.md             # Detailed documentation
+└── WORKFLOW_GUIDE.md     # Complete step-by-step guide
 ```
 
-## 🎓 The Complete Workflow
+## 🎓 The Workflow
 
 ### Problem: Your Code Has Implicit State
 
@@ -101,7 +81,7 @@ class Robot:
         # What if all three are True? 🤔
 ```
 
-### Solution: Extract → Visualize → Refactor
+### Solution: Extract → Visualize → Document
 
 **Step 1: Extract the state machine**
 ```bash
@@ -120,50 +100,27 @@ stateDiagram-v2
     Error --> Idle: reset
 ```
 
-**Step 3: Convert to executable XState**
-```bash
-cd ../mermaid-to-xstate
-node cli.js ../fsm-output/state-machine.mmd -o robot-machine.js
-```
-
-**Step 4: Refactor your code**
-```javascript
-import { interpret } from 'xstate';
-import robotMachine from './robot-machine.js';
-
-const service = interpret(robotMachine).start();
-service.send('START');  // Clear, explicit state transitions
-```
-
-**Step 5: Debug visually**
-```javascript
-// Open XState Inspector
-service.state.value;  // "Moving"
-service.state.can('PAUSE');  // true
-```
+**Step 3: View interactively in browser**
+The tool automatically opens an interactive HTML viewer where you can:
+- View the diagram with zoom and pan
+- Export as SVG or PNG
+- Share with your team
 
 ## 🌟 Key Features
-
-### code-to-fsm
 
 - ✅ **AI-Powered Analysis**: Uses Claude to understand your code
 - ✅ **Multi-Language Support**: Python, JavaScript, TypeScript, C++, Java, etc.
 - ✅ **Interactive Mode**: Chat with Claude about your state machine
-- ✅ **Automatic Documentation**: Generates diagrams for your docs
-
-### mermaid-to-xstate
-
-- ✅ **Clean Conversion**: Mermaid diagrams → XState code
-- ✅ **Multiple Formats**: ESM, CommonJS, or JSON output
-- ✅ **Interactive Visualizer**: Test your state machine in the browser
-- ✅ **Production Ready**: Generate code you can actually use
+- ✅ **Beautiful Mermaid Diagrams**: Professional state diagrams for documentation
+- ✅ **Interactive Viewer**: Zoom, pan, and export diagrams in browser
+- ✅ **Automatic Documentation**: Generates diagrams ready for your docs
 
 ## 📖 Documentation
 
 - [code-to-fsm README](./code-to-fsm/README.md) - Full analyzer documentation
-- [mermaid-to-xstate README](./mermaid-to-xstate/README.md) - Full converter documentation
 - [WORKFLOW_GUIDE.md](./code-to-fsm/WORKFLOW_GUIDE.md) - Complete step-by-step guide
-- [PLATFORM_COMPATIBILITY.md](./PLATFORM_COMPATIBILITY.md) - **Cross-platform setup & troubleshooting**
+- [PLATFORM_COMPATIBILITY.md](./PLATFORM_COMPATIBILITY.md) - Cross-platform setup & troubleshooting
+- [QUICK_REFERENCE.md](./QUICK_REFERENCE.md) - Command reference
 
 ## 🎯 Use Cases
 
@@ -174,40 +131,33 @@ cd code-to-fsm
 node cli.js analyze ./legacy-robot --focus "main controller"
 ```
 
-### 2. Refactoring to Clean State Machines
-```bash
-# Extract implicit state machine
-cd code-to-fsm
-node cli.js analyze ./my-project --to-xstate
-
-# Refactor code to use the generated XState machine
-# Enjoy clearer, more maintainable code!
-```
-
-### 3. Documentation
+### 2. Documentation
 ```bash
 # Generate state diagrams for your documentation
 cd code-to-fsm
 node cli.js analyze ./src -o ./docs/state-machines
 ```
 
-### 4. Design-First Workflow
+### 3. Code Review
 ```bash
-# Design your state machine in Mermaid first
-code state-machine.mmd
+# Visualize state machine during code review
+cd code-to-fsm
+node cli.js analyze ./feature-branch --focus "new feature"
+```
 
-# Convert to XState
-cd mermaid-to-xstate
-node cli.js state-machine.mmd -o machine.js
-
-# Implement your features using the state machine
+### 4. Team Communication
+```bash
+# Share visual state diagrams with team members
+cd code-to-fsm
+node cli.js analyze ./src
+# Opens in browser - easy to screenshot or export
 ```
 
 ## 🔧 Requirements
 
 - Node.js 14+
 - npm or yarn
-- For code-to-fsm: Access to Claude API (works in artifacts environment)
+- Claude Code CLI (for AI-powered analysis)
 
 ### Platform-Specific Notes
 
@@ -226,16 +176,9 @@ node cli.js state-machine.mmd -o machine.js
 
 ## 🚀 Installation
 
-### Install Both Tools
-
 ```bash
 # Install code-to-fsm
 cd code-to-fsm
-npm install
-npm link  # Optional: install globally
-
-# Install mermaid-to-xstate
-cd ../mermaid-to-xstate
 npm install
 npm link  # Optional: install globally
 ```
@@ -243,8 +186,7 @@ npm link  # Optional: install globally
 ### Global Usage (after npm link)
 
 ```bash
-code-to-fsm analyze /my/project --to-xstate
-mermaid-to-xstate diagram.mmd -o machine.js
+code-to-fsm analyze /my/project
 ```
 
 ## 💡 Examples
@@ -253,8 +195,6 @@ See these files for complete examples:
 
 - `code-to-fsm/example-robot/` - Sample Python robot controller
 - `code-to-fsm/EXAMPLE_OUTPUT.txt` - What the analyzer produces
-- `mermaid-to-xstate/example.mmd` - Sample Mermaid diagram
-- `mermaid-to-xstate/complex-example.mmd` - Complex authentication flow
 
 ## 🤝 Integration
 
@@ -262,10 +202,9 @@ See these files for complete examples:
 
 This toolkit is designed to work seamlessly with Claude Code:
 
-1. Use Claude Code to understand and refactor your codebase
+1. Use Claude Code to understand your codebase
 2. Run `code-to-fsm` to extract state machines
-3. Use the generated diagrams and XState code
-4. Continue refactoring with Claude Code's help
+3. Use the generated diagrams for documentation and communication
 
 ### With CI/CD
 
@@ -278,53 +217,34 @@ This toolkit is designed to work seamlessly with Claude Code:
     node cli.js analyze ../src -o ../docs/fsm
 ```
 
-### With XState Inspector
-
-All generated XState machines work with the official XState Inspector for visual debugging:
-
-```javascript
-import { inspect } from '@xstate/inspect';
-
-inspect({ iframe: false });
-const service = interpret(machine, { devTools: true });
-```
-
-Visit https://stately.ai/viz to debug visually!
-
 ## 🎓 Learning Resources
 
-- [XState Documentation](https://xstate.js.org)
 - [Mermaid Documentation](https://mermaid.js.org)
-- [State Machines Intro](https://xstate.js.org/docs/guides/introduction-to-state-machines-and-statecharts/)
-- [Stately Inspector](https://stately.ai/viz)
+- [Mermaid Live Editor](https://mermaid.live) - Test and edit diagrams online
+- [State Machines Basics](https://en.wikipedia.org/wiki/Finite-state_machine)
 
 ## 🐛 Troubleshooting
-
-### code-to-fsm issues
 
 **"No files found"**
 - Use `-f` flag to specify files explicitly
 - Check your file patterns with `-p` flag
 
-**"Claude API error"**
-- Make sure you're running in an environment with Claude API access
-- The tool works best in the artifacts environment
+**"Claude Code CLI not found"**
+- Make sure Claude Code CLI is installed
+- Verify with `claude --version`
 
-### mermaid-to-xstate issues
-
-**Invalid Mermaid syntax**
-- Check your diagram syntax at https://mermaid.live
-- Only `stateDiagram-v2` is supported
+**"Could not extract diagram"**
+- Try using `--focus` flag to narrow scope
+- Use interactive mode for complex codebases
 
 ## 🔮 Future Enhancements
 
-- [ ] Support for hierarchical/nested states
+- [ ] Support for hierarchical/nested states in diagrams
 - [ ] Extract guards and actions from code comments
 - [ ] Detect state machine bugs (deadlocks, unreachable states)
 - [ ] Generate test cases from state machines
-- [ ] Web UI for the complete workflow
 - [ ] VS Code extension
-- [ ] Support for more state machine formats (Harel charts, etc.)
+- [ ] Export to additional formats (PlantUML, GraphViz, etc.)
 
 ## 📝 License
 
@@ -333,9 +253,8 @@ MIT
 ## 🙏 Credits
 
 Built with:
-- [XState](https://xstate.js.org) - State machine library
 - [Mermaid](https://mermaid.js.org) - Diagram syntax
-- [Claude](https://claude.ai) - AI-powered code analysis
+- [Claude Code](https://claude.com/claude-code) - AI-powered code analysis
 - [Commander.js](https://github.com/tj/commander.js) - CLI framework
 
 ---

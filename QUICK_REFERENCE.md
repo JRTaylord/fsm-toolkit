@@ -1,7 +1,7 @@
 # FSM Toolkit - Quick Reference Card
 
 ## 🎯 One-Line Summary
-Extract state machines from code using AI → Generate beautiful diagrams → Convert to debuggable XState
+Extract state machines from code using AI → Generate beautiful Mermaid diagrams
 
 ---
 
@@ -24,13 +24,7 @@ Extract state machines from code using AI → Generate beautiful diagrams → Co
 ### Analyze Your Code
 ```bash
 cd code-to-fsm
-node cli.js analyze /path/to/project --to-xstate
-```
-
-### Convert Mermaid to XState
-```bash
-cd mermaid-to-xstate
-node cli.js diagram.mmd -o machine.js
+node cli.js analyze /path/to/project
 ```
 
 ### Interactive Mode (Chat with Claude)
@@ -39,14 +33,20 @@ cd code-to-fsm
 node cli.js interactive /path/to/project
 ```
 
+### Focus on Specific Component
+```bash
+cd code-to-fsm
+node cli.js analyze /path/to/project --focus "navigation system"
+```
+
 ---
 
 ## 📁 What You Get
 
 ```
-📊 state-machine.mmd      ← Mermaid diagram (visual)
+📊 state-machine.mmd      ← Mermaid diagram source
 📄 analysis.txt           ← Full explanation
-🎯 state-machine.js       ← XState code (executable)
+🌐 state-machine.html     ← Interactive visualization
 ```
 
 ---
@@ -54,11 +54,11 @@ node cli.js interactive /path/to/project
 ## 🎓 Typical Workflow
 
 1. **Extract**: `node cli.js analyze ./robot-code`
-2. **Review**: Open `state-machine.mmd`
-3. **Refine**: Edit diagram if needed
-4. **Convert**: `node cli.js diagram.mmd -o robot.js`
-5. **Refactor**: Use generated XState in your code
-6. **Debug**: Use XState Inspector
+2. **View**: Opens automatically in browser
+3. **Review**: Check `state-machine.mmd` and `analysis.txt`
+4. **Export**: Use browser controls to export as SVG/PNG
+5. **Document**: Add diagrams to your documentation
+6. **Share**: Share with your team
 
 ---
 
@@ -68,8 +68,8 @@ node cli.js interactive /path/to/project
 |----------|---------|
 | Understand legacy code | `analyze /old-project` |
 | Document your code | `analyze /src -o /docs/fsm` |
-| Refactor to XState | `analyze /src --to-xstate` |
-| Design new feature | Create `.mmd` → convert to XState |
+| Code review | `analyze /feature-branch --focus "feature"` |
+| Team communication | `analyze /src` (share exported diagram) |
 
 ---
 
@@ -77,18 +77,10 @@ node cli.js interactive /path/to/project
 
 ### code-to-fsm
 ```bash
--o, --output <dir>              # Output directory
+-o, --output <dir>              # Output directory (default: ./fsm-output)
 -f, --files <files...>          # Specific files only
+-p, --patterns <patterns...>    # File patterns to match
 --focus "component"             # Focus on specific part
---to-xstate                     # Generate XState too
---machine-id "myMachine"        # Custom XState ID
-```
-
-### mermaid-to-xstate
-```bash
--o, --output <file>             # Output file
--f, --format <format>           # esm|cjs|json
--i, --id <id>                   # Machine ID
 ```
 
 ---
@@ -98,30 +90,20 @@ node cli.js interactive /path/to/project
 ### Example 1: Analyze Python Robot
 ```bash
 cd code-to-fsm
-node cli.js analyze ../robot-project -f controller.py sensor.py --to-xstate
+node cli.js analyze ../robot-project -f controller.py sensor.py
 ```
 
-### Example 2: Design First, Code Later
-```bash
-# 1. Design in Mermaid
-cat > robot.mmd << 'EOF'
-stateDiagram-v2
-    [*] --> Idle
-    Idle --> Moving: start
-    Moving --> [*]: stop
-EOF
-
-# 2. Convert to XState
-cd mermaid-to-xstate
-node cli.js robot.mmd -o robot-machine.js
-
-# 3. Implement using the state machine
-```
-
-### Example 3: Document Existing Code
+### Example 2: Document Existing Code
 ```bash
 cd code-to-fsm
 node cli.js analyze ../my-app --focus "authentication flow" -o ../docs/diagrams
+```
+
+### Example 3: Interactive Exploration
+```bash
+cd code-to-fsm
+node cli.js interactive ../my-app
+# Chat with Claude about the state machine
 ```
 
 ---
@@ -132,7 +114,7 @@ node cli.js analyze ../my-app --focus "authentication flow" -o ../docs/diagrams
 |---------|----------|
 | "node not found" | Install Node.js 14+ |
 | "No files found" | Use `-f` to specify files |
-| "Claude API error" | Run in artifacts environment |
+| "Claude Code CLI not found" | Install Claude Code CLI |
 | Emoji issues (Windows) | Use Windows Terminal |
 
 ---
@@ -142,8 +124,7 @@ node cli.js analyze ../my-app --focus "authentication flow" -o ../docs/diagrams
 - `README.md` - Overview & features
 - `PLATFORM_COMPATIBILITY.md` - Windows/macOS/Linux setup
 - `code-to-fsm/WORKFLOW_GUIDE.md` - Detailed workflow
-- `code-to-fsm/README.md` - Analyzer docs
-- `mermaid-to-xstate/README.md` - Converter docs
+- `code-to-fsm/README.md` - Full analyzer documentation
 
 ---
 
@@ -153,8 +134,8 @@ node cli.js analyze ../my-app --focus "authentication flow" -o ../docs/diagrams
 - ✅ **Multi-language** - Python, JS, C++, Java, etc.
 - ✅ **AI-powered** - Claude understands your code
 - ✅ **Visual** - Beautiful Mermaid diagrams
-- ✅ **Executable** - Working XState machines
-- ✅ **Debuggable** - XState Inspector support
+- ✅ **Interactive** - Browser-based viewer with zoom/pan
+- ✅ **Exportable** - SVG, PNG, and Mermaid source
 
 ---
 

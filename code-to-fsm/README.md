@@ -149,33 +149,12 @@ stateDiagram-v2
     ERROR --> [*]
 ```
 
-### Generated XState Code
-```javascript
-import { createMachine } from 'xstate';
-
-const machine = createMachine({
-  id: "extractedMachine",
-  initial: "IDLE",
-  states: {
-    IDLE: {
-      on: {
-        START_MOVING: "MOVING",
-        HANDLE_ERROR: "ERROR"
-      }
-    },
-    MOVING: {
-      on: {
-        HANDLE_ERROR: "ERROR"
-      }
-    },
-    ERROR: {
-      type: "final"
-    }
-  }
-});
-
-export default machine;
-```
+### Interactive HTML Visualization
+The tool also generates an interactive HTML file that opens in your browser with:
+- Zoom and pan controls
+- Export to SVG/PNG
+- Embedded Mermaid rendering
+- Easy sharing with team members
 
 ## 🔧 Options
 
@@ -187,9 +166,6 @@ export default machine;
 | `-f, --files <files...>` | Specific files to analyze | All matching files |
 | `-p, --patterns <patterns...>` | File patterns to match | `*.py, *.js, *.ts, *.cpp, *.c, *.java` |
 | `--focus <area>` | Focus area (e.g., "navigation") | None |
-| `--to-xstate` | Generate XState code | false |
-| `--xstate-format <format>` | XState format: esm, cjs, json | `esm` |
-| `--machine-id <id>` | XState machine ID | `extractedMachine` |
 
 ## 🎓 Use Cases
 
@@ -199,11 +175,11 @@ export default machine;
 node cli.js analyze ./legacy-robot-code --focus "main controller"
 ```
 
-### 2. Refactoring to XState
+### 2. Refactoring Planning
 ```bash
-# Extract the implicit state machine and convert to explicit XState
-node cli.js analyze ./my-project --to-xstate
-# Now refactor your code to use the generated XState machine
+# Extract the implicit state machine to visualize before refactoring
+node cli.js analyze ./my-project
+# Use the diagram to plan your refactoring approach
 ```
 
 ### 3. Documentation
@@ -238,28 +214,28 @@ git add docs/state-machines/*
 ```
 
 ### With Claude Code
-Since this tool uses the Claude API (same as artifacts), you can integrate it into your Claude Code workflow:
+This tool uses the Claude Code CLI to analyze your code:
 
-1. Use Claude Code to analyze and refactor your code
-2. Run this tool to extract the state machine
-3. Use the generated XState code in your refactored implementation
-4. Debug with XState Inspector
+1. Use Claude Code to understand and explore your codebase
+2. Run this tool to extract state machines as Mermaid diagrams
+3. Use the generated diagrams for documentation and communication
+4. Share with your team or include in technical documentation
 
-## 🤝 Combining with Mermaid-to-XState
+## 🤝 Integration Workflow
 
-This tool works perfectly with the `mermaid-to-xstate` converter:
+This tool generates Mermaid diagrams that can be:
 
 ```bash
 # Extract state machine from code
 cd code-to-fsm
 node cli.js analyze ../my-robot -o ../output
 
-# Manually edit the Mermaid diagram if needed
+# View the interactive visualization (auto-opens in browser)
+# Or manually edit the Mermaid diagram if needed
 code ../output/state-machine.mmd
 
-# Convert to XState with custom options
-cd ../mermaid-to-xstate
-node cli.js ../output/state-machine.mmd -o ../output/refined-machine.js -i robotMachine
+# Use the diagram in your documentation
+cp ../output/state-machine.mmd ../docs/
 ```
 
 ## 🐛 Troubleshooting
@@ -301,7 +277,7 @@ See `example-robot/` for a sample Python robot controller that demonstrates comm
 ## 🤖 Requirements
 
 - Node.js 14+
-- Access to Claude API (via artifacts environment or API key)
+- Claude Code CLI (install from https://claude.com/claude-code)
 
 ## 📄 License
 

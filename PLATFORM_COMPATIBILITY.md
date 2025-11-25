@@ -18,11 +18,8 @@ cd path\to\fsm-toolkit
 # Run the PowerShell setup script
 .\quickstart.ps1
 
-# Or manually install each tool
+# Or manually install
 cd code-to-fsm
-npm install
-
-cd ..\mermaid-to-xstate
 npm install
 ```
 
@@ -34,11 +31,8 @@ cd path\to\fsm-toolkit
 REM Run the batch setup script
 quickstart.bat
 
-REM Or manually install each tool
+REM Or manually install
 cd code-to-fsm
-npm install
-
-cd ..\mermaid-to-xstate
 npm install
 ```
 
@@ -53,19 +47,13 @@ npm install
 **Analyze code (PowerShell):**
 ```powershell
 cd code-to-fsm
-node cli.js analyze C:\Users\YourName\Documents\robot-project --to-xstate
+node cli.js analyze C:\Users\YourName\Documents\robot-project
 ```
 
 **Analyze code (Command Prompt):**
 ```cmd
 cd code-to-fsm
-node cli.js analyze C:\Users\YourName\Documents\robot-project --to-xstate
-```
-
-**Convert Mermaid diagram:**
-```powershell
-cd mermaid-to-xstate
-node cli.js C:\path\to\diagram.mmd -o output.js
+node cli.js analyze C:\Users\YourName\Documents\robot-project
 ```
 
 ### Windows-Specific Notes
@@ -100,11 +88,8 @@ cd /path/to/fsm-toolkit
 chmod +x quickstart.sh
 ./quickstart.sh
 
-# Or manually install each tool
+# Or manually install
 cd code-to-fsm
-npm install
-
-cd ../mermaid-to-xstate
 npm install
 ```
 
@@ -113,11 +98,7 @@ npm install
 ```bash
 # Analyze code
 cd code-to-fsm
-node cli.js analyze ~/Projects/robot-project --to-xstate
-
-# Convert Mermaid diagram
-cd mermaid-to-xstate
-node cli.js ~/Documents/diagram.mmd -o output.js
+node cli.js analyze ~/Projects/robot-project
 ```
 
 ### macOS-Specific Notes
@@ -150,11 +131,8 @@ cd /path/to/fsm-toolkit
 chmod +x quickstart.sh
 ./quickstart.sh
 
-# Or manually install each tool
+# Or manually install
 cd code-to-fsm
-npm install
-
-cd ../mermaid-to-xstate
 npm install
 ```
 
@@ -163,11 +141,7 @@ npm install
 ```bash
 # Analyze code
 cd code-to-fsm
-node cli.js analyze /home/user/robot-project --to-xstate
-
-# Convert Mermaid diagram
-cd mermaid-to-xstate
-node cli.js /home/user/diagram.mmd -o output.js
+node cli.js analyze /home/user/robot-project
 ```
 
 ### Linux-Specific Notes
@@ -291,15 +265,15 @@ To verify everything works on your system:
 # Should output Node version
 node --version
 
-# Should output npm version  
+# Should output npm version
 npm --version
 
-# Test mermaid-to-xstate
-cd mermaid-to-xstate
+# Test code-to-fsm
+cd code-to-fsm
 npm install
-node cli.js example.mmd
+node cli.js --help
 
-# If output appears, you're good to go!
+# If help text appears, you're good to go!
 ```
 
 ---
@@ -341,9 +315,9 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: |
-          cd mermaid-to-xstate
+          cd code-to-fsm
           npm install
-          node cli.js example.mmd
+          node cli.js --help
 ```
 
 ---
