@@ -7,51 +7,32 @@ mermaid.initialize({
     }
 });
 
-let currentZoom = 1;
-const container = document.getElementById('diagram-container');
-const zoomIndicator = document.getElementById('zoom-indicator');
+let panZoomInstance = null;
 
-function showZoomIndicator() {
-    zoomIndicator.textContent = Math.round(currentZoom * 100) + '%';
-    zoomIndicator.style.display = 'block';
+// Initialize svg-pan-zoom after mermaid renders
+window.addEventListener('load', () => {
     setTimeout(() => {
-        zoomIndicator.style.display = 'none';
-    }, 1000);
-}
-
-function zoomIn() {
-    currentZoom = Math.min(3, currentZoom + 0.1);
-    applyZoom();
-}
-
-function zoomOut() {
-    currentZoom = Math.max(0.3, currentZoom - 0.1);
-    applyZoom();
-}
-
-function resetZoom() {
-    currentZoom = 1;
-    applyZoom();
-}
-
-function fitToScreen() {
-    const svg = container.querySelector('svg');
-    if (svg) {
-        const containerWidth = container.clientWidth;
-        const svgWidth = svg.getBBox().width;
-        currentZoom = (containerWidth - 60) / svgWidth;
-        applyZoom();
-    }
-}
-
-function applyZoom() {
-    container.style.transform = `scale(${currentZoom})`;
-    container.style.transformOrigin = 'top left';
-    showZoomIndicator();
-}
+        const svg = document.querySelector('#diagram-container svg');
+        if (svg && typeof svgPanZoom !== 'undefined') {
+            panZoomInstance = svgPanZoom(svg, {
+                zoomEnabled: true,
+                controlIconsEnabled: true,
+                fit: true,
+                center: true,
+                minZoom: 0.3,
+                maxZoom: 10,
+                zoomScaleSensitivity: 0.3,
+                dblClickZoomEnabled: true,
+                mouseWheelZoomEnabled: true,
+                preventMouseEventsDefault: true,
+                contain: false
+            });
+        }
+    }, 500);
+});
 
 function downloadSVG() {
-    const svg = container.querySelector('svg');
+    const svg = document.querySelector('#diagram-container svg');
     if (svg) {
         const serializer = new XMLSerializer();
         const svgString = serializer.serializeToString(svg);
@@ -66,7 +47,7 @@ function downloadSVG() {
 }
 
 function downloadPNG() {
-    const svg = container.querySelector('svg');
+    const svg = document.querySelector('#diagram-container svg');
     if (svg) {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
@@ -93,24 +74,3 @@ function downloadPNG() {
         img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
     }
 }
-
-// Keyboard shortcuts
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey || e.metaKey) {
-        if (e.key === '=') {
-            e.preventDefault();
-            zoomIn();
-        } else if (e.key === '-') {
-            e.preventDefault();
-            zoomOut();
-        } else if (e.key === '0') {
-            e.preventDefault();
-            resetZoom();
-        }
-    }
-});
-
-// Auto-fit on load
-window.addEventListener('load', () => {
-    setTimeout(fitToScreen, 500);
-});
