@@ -1,6 +1,6 @@
-# FSM Toolkit
+# Robot FSM Generator
 
-Extract state machines from your codebase and generate beautiful Mermaid diagrams using AI.
+Extract state machines from your robot codebase and generate beautiful Mermaid diagrams using AI.
 
 ## 🎯 What This Gives You
 
