@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Code to FSM Analyzer CLI
 Analyze code to extract state machines and generate Mermaid diagrams
@@ -9,6 +10,12 @@ import os
 import argparse
 from pathlib import Path
 from analyzer import CodeToFSMAnalyzer
+
+# Fix Windows console encoding issues
+if sys.platform == 'win32':
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 def main():
     parser = argparse.ArgumentParser(
